@@ -18,17 +18,22 @@
         Name="This">
 
     <FrameworkElement.InputBindings>
-        <KeyBinding Gesture="Ctrl+N"
+        <KeyBinding Key="{Binding NewCSDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding NewCSDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding NewDocumentCommand, Mode=OneTime}"
                     CommandParameter="{x:Static roslyn:SourceCodeKind.Regular}" />
-        <KeyBinding Gesture="Ctrl+Shift+N"
+        <KeyBinding Key="{Binding NewCSXScriptGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding NewCSXScriptGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding NewDocumentCommand, Mode=OneTime}"
                     CommandParameter="{x:Static roslyn:SourceCodeKind.Script}" />
-        <KeyBinding Gesture="Ctrl+O"
+        <KeyBinding Key="{Binding OpenFileGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding OpenFileGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding OpenFileCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+W"
+        <KeyBinding Key="{Binding CloseCurrentDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding CloseCurrentDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding CloseCurrentDocumentCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+Shift+O"
+        <KeyBinding Key="{Binding ToggleOptimizationGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding ToggleOptimizationGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding ToggleOptimizationCommand, Mode=OneTime}" />
     </FrameworkElement.InputBindings>
     <FrameworkElement.Resources>

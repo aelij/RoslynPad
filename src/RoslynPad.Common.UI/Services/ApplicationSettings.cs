@@ -77,22 +77,29 @@ namespace RoslynPad.UI
 
         private void LoadSettings(string path)
         {
-            if (!File.Exists(path))
-            {
-                _values.LoadDefaultSettings();
-                return;
-            }
-
             try
             {
-                var json = File.ReadAllText(path);
-                _values = JsonSerializer.Deserialize<SerializableValues>(json, s_serializerOptions) ?? new SerializableValues();
-                InitializeValues();
+                if (!File.Exists(path))
+                {
+                    _values.LoadDefaultSettings();
+                    return;
+                }
+
+                try
+                {
+                    var json = File.ReadAllText(path);
+                    _values = JsonSerializer.Deserialize<SerializableValues>(json, s_serializerOptions) ?? new SerializableValues();
+                    InitializeValues();
+                }
+                catch (Exception e)
+                {
+                    _values.LoadDefaultSettings();
+                    _telemetryProvider?.ReportError(e);
+                }
             }
-            catch (Exception e)
+            finally
             {
-                _values.LoadDefaultSettings();
-                _telemetryProvider?.ReportError(e);
+                KeybindHelper.ReadOverrides(_values);
             }
         }
 
@@ -115,6 +122,7 @@ namespace RoslynPad.UI
         {
             private const int LiveModeDelayMsDefault = 2000;
             private const int EditorFontSizeDefault = 12;
+            private System.Collections.Generic.IDictionary<string, string>? _keyBindOverrides;
 
             private bool _sendErrors;
             private string? _latestVersion;
@@ -141,7 +149,11 @@ namespace RoslynPad.UI
                 EditorFontSize = EditorFontSizeDefault;
                 LiveModeDelayMs = LiveModeDelayMsDefault;
             }
-
+            public System.Collections.Generic.IDictionary<string, string>? KeyBindOverrides
+            {
+                get => _keyBindOverrides;
+                set => SetProperty(ref _keyBindOverrides, value);
+            }
             public bool SendErrors
             {
                 get => _sendErrors;

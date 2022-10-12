@@ -290,16 +290,19 @@ namespace RoslynPad.UI
             OnPropertyChanged(nameof(CurrentOpenDocument));
         }
 
+        public string NewCSDocumentGesture => KeybindHelper.GetSequenceStr(KEY_BIND.NewCSDocument);
+        public string NewCSXScriptGesture => KeybindHelper.GetSequenceStr(KEY_BIND.NewCSXScript);
         public IDelegateCommand<SourceCodeKind> NewDocumentCommand { get; }
-
+        public string OpenFileGesture => KeybindHelper.GetSequenceStr(KEY_BIND.OpenFile);
         public IDelegateCommand OpenFileCommand { get; }
 
         public IDelegateCommand EditUserDocumentPathCommand { get; }
+        public string CloseCurrentDocumentGesture => KeybindHelper.GetSequenceStr(KEY_BIND.CloseCurrentFile);
 
         public IDelegateCommand CloseCurrentDocumentCommand { get; }
 
         public IDelegateCommand<OpenDocumentViewModel> CloseDocumentCommand { get; }
-
+        public string ToggleOptimizationGesture => KeybindHelper.GetSequenceStr(KEY_BIND.ToggleDebugMode);
         public IDelegateCommand ToggleOptimizationCommand { get; }
 
         public void OpenDocument(DocumentViewModel document)

@@ -9,19 +9,26 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance ui:OpenDocumentViewModel}">
     <FrameworkElement.InputBindings>
-        <KeyBinding Key="F5"
+        <KeyBinding Key="{Binding RunGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding RunGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding RunCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Shift+F5"
+        <KeyBinding Key="{Binding TerminateGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding TerminateGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding TerminateCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+S"
+        <KeyBinding Key="{Binding SaveGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding SaveGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding SaveCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+D"
+        <KeyBinding Key="{Binding FormatDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding FormatDocumentGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding FormatDocumentCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+K"
+        <KeyBinding Key="{Binding CommentSelectionGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding CommentSelectionGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding CommentSelectionCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="Ctrl+U"
+        <KeyBinding Key="{Binding UncommentSelectionGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding UncommentSelectionGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding UncommentSelectionCommand, Mode=OneTime}" />
-        <KeyBinding Gesture="F2"
+        <KeyBinding Key="{Binding RenameSymbolGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
+                    Modifiers="{Binding RenameSymbolGesture, Mode=OneTime, Converter={StaticResource KeySequenceToGestureConverter}}"
                     Command="{Binding RenameSymbolCommand, Mode=OneTime}" />
     </FrameworkElement.InputBindings>
     <DockPanel>
@@ -51,7 +58,7 @@
                      BorderBrush="DarkGray"
                      BorderThickness="0 0 0 1">
                 <Button Command="{Binding RunCommand, Mode=OneTime}"
-                        ToolTip="Run (F5)">
+                        ToolTip="{Binding Converter={StaticResource KeyBindToDescriptionConverter}, ConverterParameter={x:Static ui:KEY_BIND.RunScript}}">
                     <Grid>
                         <Image>
                             <Image.Style>
