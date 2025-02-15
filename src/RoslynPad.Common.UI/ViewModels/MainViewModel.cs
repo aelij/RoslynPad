@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -86,6 +86,7 @@ public abstract class MainViewModel : NotificationObject, IDisposable
 
         NewDocumentCommand = commands.Create<SourceCodeKind>(CreateNewDocument);
         OpenFileCommand = commands.CreateAsync(OpenFile);
+        OpenFolderCommand = commands.CreateAsync(OpenFolder);
         CloseCurrentDocumentCommand = commands.CreateAsync(CloseCurrentDocument);
         CloseDocumentCommand = commands.CreateAsync<OpenDocumentViewModel>(CloseDocument);
         ClearErrorCommand = commands.Create(_telemetryProvider.ClearLastError);
@@ -322,6 +323,14 @@ public abstract class MainViewModel : NotificationObject, IDisposable
         _documentWatcher = new DocumentWatcher(_documentFileWatcher, root);
         return root;
     }
+    [MemberNotNull(nameof(_documentWatcher))]
+    private DocumentViewModel SetDocumentRoot()
+    {
+        _documentWatcher?.Dispose();
+        var root = DocumentViewModel.CreateRoot(Settings.DocumentPath!);
+        _documentWatcher = new DocumentWatcher(_documentFileWatcher, root);
+        return root;
+    }
 
     public void EditUserDocumentPath()
     {
@@ -382,6 +391,8 @@ public abstract class MainViewModel : NotificationObject, IDisposable
 
     public IDelegateCommand OpenFileCommand { get; }
 
+    public IDelegateCommand OpenFolderCommand { get; }
+
     public IDelegateCommand EditUserDocumentPathCommand { get; }
 
     public IDelegateCommand CloseCurrentDocumentCommand { get; }
@@ -431,6 +442,46 @@ public abstract class MainViewModel : NotificationObject, IDisposable
         }
 
         OpenDocument(document);
+    }
+    public async Task OpenFolder()
+    {
+        if (!IsInitialized) return;
+
+        var dialog = _serviceProvider.GetRequiredService<IOpenFolderDialog>();
+        //dialog.InitialDirectory = "C:\\Users\\luxus\\source\\repos\\roslynpad\\roslynpad\\src\\";
+        var folderPath = await dialog.ShowAsync().ConfigureAwait(true);
+
+        if (folderPath == null)
+        {
+            return;
+        }
+
+        if (!DocumentRoot.Path.Equals(folderPath, StringComparison.OrdinalIgnoreCase))
+        {
+            Settings.DocumentPath = folderPath;
+
+            DocumentRoot = SetDocumentRoot();
+        }
+
+        
+        var filePaths = Directory.GetFiles(folderPath, "*.cs, *.csx", SearchOption.TopDirectoryOnly);
+
+        foreach (var filePath in filePaths)
+        {
+            var normalizedPath = IOUtilities.NormalizeFilePath(filePath);
+            var document = DocumentViewModel.FromPath(normalizedPath);
+
+            if (!document.IsAutoSave)
+            {
+                var autoSavePath = document.GetAutoSavePath();
+                if (File.Exists(autoSavePath))
+                {
+                    document = DocumentViewModel.FromPath(autoSavePath);
+                }
+            }
+
+            OpenDocument(document);
+        }
     }
 
     public void CreateNewDocument(SourceCodeKind kind = SourceCodeKind.Regular)

@@ -69,13 +69,22 @@
         <Button Grid.Column="4"
                 BorderBrush="Transparent"
                 Background="Transparent"
+                Command="{Binding OpenFolderCommand, Mode=OneTime}"
+                ToolTip.Tip="{OnPlatform Open Folder (Ctrl+E), macOS=Open Folder (⌘ E)}">
+            <Image Source="{StaticResource OpenFolder}"
+                    Width="16"
+                    Height="16" />
+        </Button>
+        <Button Grid.Column="5"
+                BorderBrush="Transparent"
+                Background="Transparent"
                 Command="{Binding EditUserDocumentPathCommand, Mode=OneTime}"
                 ToolTip.Tip="Change Documents Location">
           <Image Source="{DynamicResource MoveFolder}"
                  Width="16"
                  Height="16" />
         </Button>
-        <Button Grid.Column="4"
+        <Button Grid.Column="6"
                 BorderBrush="Transparent"
                 Background="Transparent"
                 Command="{Binding ClearRestoreCacheCommand, Mode=OneTime}"

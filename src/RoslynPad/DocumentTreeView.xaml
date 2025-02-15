@@ -106,6 +106,13 @@
                        Width="16"
                        Height="16" />
             </Button>
+            <Button ToolTip="Open Folder (Ctrl+E)"
+                    ToolTipService.Placement="Top"
+                    Command="{Binding OpenFolderCommand, Mode=OneTime}">
+                <Image Source="{StaticResource Folder}"
+                       Width="16"
+                       Height="16" />
+            </Button>
             <Button ToolTip="Change Documents Location"
                     ToolTipService.Placement="Top"
                     Command="{Binding EditUserDocumentPathCommand, Mode=OneTime}">

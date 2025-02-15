@@ -26,6 +26,8 @@
                     CommandParameter="{x:Static roslyn:SourceCodeKind.Script}" />
         <KeyBinding Gesture="Ctrl+O"
                     Command="{Binding OpenFileCommand, Mode=OneTime}" />
+        <KeyBinding Gesture="Ctrl+E"
+                    Command="{Binding OpenFolderCommand, Mode=OneTime}" />
         <KeyBinding Gesture="Ctrl+W"
                     Command="{Binding CloseCurrentDocumentCommand, Mode=OneTime}" />
         <KeyBinding Gesture="Ctrl+Shift+O"
